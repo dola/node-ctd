@@ -1,0 +1,22 @@
+# Structure
+
+ - What is node.js
+    - Timeline
+ - How does it work?
+    - JavaScript Event Loop
+    - https://developer.mozilla.org/en/docs/Web/JavaScript/EventLoop
+    - Async
+ - What does it look like?
+    - Simple Webserver: Hello World
+    - Callbacks (error-first)
+    - Events
+    - Streams
+ - Ecosystem
+    - NPM, package.json, node_modules
+ - Express.js
+    - Quickly build an entire Rest API
+    - Easy horizontal scaling
+    - No Application Server
+    - No complicated configurations
+ - Why should I use it?
+ - 

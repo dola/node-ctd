@@ -1,0 +1,323 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Quick and Dirty Introduction to Node.js</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <img src="resources/node-logo.png" width="500px">
+            <h2>Quick and Dirty</h2>
+            <p>Dominic Langenegger</p>
+        </section>
+
+        <section>
+            <section>
+                <h1>What is Node.js</h1>
+            </section>
+            <section>
+                <ul>
+                    <li>Server-side JavaScript</li>
+                    <li>Powered by Google's V8</li>
+                    <li>Evented, non-blocking I/O</li>
+                </ul>
+            </section>
+            <section>
+                <p>Like JavaScript in the browser <b>but</b><br> with modules that make it useful on the server</p>
+            </section>
+            <section>
+                <h2>Ryan Dahl's original Node.js talk</h2>
+                <iframe width="560" height="315"
+                        src="https://www.youtube-nocookie.com/embed/ztspvPYybIY?rel=0&start=42&end=72" frameborder="0"
+                        allowfullscreen></iframe>
+                <p>November 8, 2009</p>
+            </section>
+            <section>
+                <h1>I/O needs to be done differently</h1>
+            </section>
+            <section>
+                <h2>Waiting for the Database</h2>
+                <pre><code data-trim data-noescape class="java">
+var result = db.query("select * from users");
+// use result
+                </code></pre>
+                <p>Either blocks entire process or implies threads</p>
+            </section>
+            <section>
+                <!-- https://blog.webfaction.com/2008/12/a-little-holiday-present-10000-reqssec-with-nginx-2/ -->
+                <img src="resources/nginx-apache-reqs-sec.png" class="border">
+                <img src="resources/nginx-apache-memory.png" class="border">
+                <footer>
+                    <a href="https://blog.webfaction.com/2008/12/a-little-holiday-present-10000-reqssec-with-nginx-2/" target="_blank">
+                        Apache vs. nginx
+                    </a>
+                </footer>
+            </section>
+            <section>
+                <h2>Asynchronous I/O</h2>
+                <pre><code data-trim data-noescape class="java">
+var result = db.query("select * from users", function (result) {
+    // use result
+});
+                </code></pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>JavaScript Event Loop</h2>
+                <ul>
+                    <li>single-threaded</li>
+                    <li>non-blocking</li>
+                    <li>asynchronous</li>
+                    <li>concurrent</li>
+                </ul>
+                <!--
+                    http://softwareengineeringdaily.com/2015/08/02/how-does-node-js-work-asynchronously-without-multithreading/
+                    http://bytearcher.com/articles/parallel-vs-concurrent/
+                -->
+                <footer>
+                    <a href="http://pascalprecht.github.io/slides/angular-2-change-detection-explained/">
+                        "Angular2 Change Detection" Pascal Precht #ejs16
+                    </a>
+                </footer>
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-1.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-2.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-3.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-4.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-5.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-6.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-7.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-8.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-9.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-10.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-11.svg">
+            </section>
+            <section data-transition="none">
+                <h2>Event Loop</h2>
+                <img src="resources/event-loop/cs-async-12.svg">
+            </section>
+        </section>
+
+        <section>
+            <h2>Event Loop in Node.js</h2>
+            <img src="resources/node-event-loop.png">
+            <!--<pre>
+       ┌───────────────────────┐
+    ┌─>│        timers         │
+    │  └──────────┬────────────┘
+    │  ┌──────────┴────────────┐
+    │  │   pending callbacks   │
+    │  └──────────┬────────────┘      ┌───────────────┐
+    │  ┌──────────┴────────────┐      │   incoming:   │
+    └──│         poll          │<─────┤  connections, │
+       └───────────────────────┘      │   data, etc.  │
+                                      └───────────────┘
+            </pre>-
+            <p class="fragment">Simplified!</p>-->
+            <!-- https://github.com/nodejs/node/blob/master/doc/topics/event-loop-timers-and-nexttick.md -->
+            <footer>
+                <a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" target="_blank">What the heck is the event loop anyway? [Philip Roberts, 2014]</a><br>
+                <a href="https://github.com/nodejs/node/blob/master/doc/topics/event-loop-timers-and-nexttick.md" target="_blank">Event Loop Explained [Node.js Github]</a>
+            </footer>
+            <aside class="notes">
+                Simplified!
+            </aside>
+        </section>
+
+        <section>
+            <section>
+                <h2>My first Webserver</h2>
+                <pre><code data-trim data-noescape class="javascript">
+// Load the http node module to create an http server.
+const http = require('http');
+
+// HTTP server that responds with Hello World to all requests
+const server = http.createServer(function (request, response) {
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.end("Hello World\n");
+});
+
+// Listen on port 8000
+server.listen(8000);
+
+// Put a friendly message on the terminal
+console.log("Server running at http://127.0.0.1:8000/");
+                </code></pre>
+            </section>
+            <section>
+                <h2>No ...</h2>
+                <ul>
+                    <li>Application Server</li>
+                    <li>Threads</li>
+                    <li>Dependencies</li>
+                    <li class="fragment">Types</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Modules Ecosystem</h2>
+                <img src="resources/modules-count.png">
+                <footer>
+                    <a href="http://www.modulecounts.com/" target="_blank">modulescounts.com</a>
+                </footer>
+            </section>
+            <section>
+                <p>As easy as:</p>
+                <pre><code data-trim data-noescape>
+$ npm install --save express
+
+# in code
+const express = require('express');
+                </code></pre>
+            </section>
+            <section>
+                express, gulp, request, async, lodash, pm2, socket.io, mocha, angular, react, karma, mysql, moment...
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Express.js</h2>
+                <pre><code data-trim data-noescape class="javascript">
+const express = require('express');
+const fs = require('fs');
+const app = express();
+
+app.get('/downloadFile/:filename', function (req, res) {
+    fs.createReadStream(req.params.filename)
+      .pipe(res);
+});
+
+app.listen(8000, function () {
+    console.log('File server listening on port 8000!');
+});
+                </code></pre>
+            </section>
+            <section>
+                <h2>Express.js</h2>
+                <ul>
+                    <li>Routing</li>
+                    <li>Middlewares
+                    <ul>
+                        <li>Static Files</li>
+                        <li>Session Handling</li>
+                        <li>Logging</li>
+                        <li>...</li>
+                    </ul>
+                    </li>
+                    <li>Template Engines</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section data-background-image="resources/will-it-scale.png">
+                <!--<a href="http://thecooperreview.com/10-tricks-appear-smart-meetings/" target="_blank">10 Tricks to Appear Smart in Meetings</a>-->
+            </section>
+            <section>
+                <h2>It will!</h2>
+                <p>Just run multiple instances!</p>
+                <footer>
+                    <a href="https://github.com/Unitech/pm2" target="_blank">e.g. with <code>pm2</code></a>
+                </footer>
+            </section>
+        </section>
+        <section>
+            <section data-background-image="resources/goodbadugly.jpg"></section>
+            <section>
+                <ul style="list-style-type: none">
+                    <li>+</li>
+                    <li>Rapid development</li>
+                    <li>Fast non-blocking i/o</li>
+                    <li>Code sharing</li>
+                </ul>
+                <ul style="list-style-type: none">
+                    <li>-</li>
+                    <li>CPU heavy tasks</li>
+                    <li>Callback hell</li>
+                    <li>Types...</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <h1>Questions?</h1>
+        </section>
+
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            }
+        ]
+    });
+</script>
+</body>
+</html>
