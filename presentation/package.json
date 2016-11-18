@@ -1,7 +1,7 @@
 {
-  "name": "reveal.js",
+  "name": "node-quick-and-dirty",
   "version": "3.3.0",
-  "description": "The HTML Presentation Framework",
+  "description": "Node.js quick and dirty introduction",
   "homepage": "http://lab.hakim.se/reveal-js",
   "subdomain": "revealjs",
   "main": "js/reveal.js",
@@ -9,9 +9,8 @@
     "start": "grunt serve"
   },
   "author": {
-    "name": "Hakim El Hattab",
-    "email": "hakim.elhattab@gmail.com",
-    "web": "http://hakim.se"
+    "name": "Dominic Langenegger",
+    "email": "dola@gmx.ch"
   },
   "engines": {
     "node": "~4.1.1"
